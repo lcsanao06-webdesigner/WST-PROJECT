@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>  
+<head>
+    <link rel="icon" href="logo.png"/>
+    <link rel="stylesheet" href="style.css"/>
+    <script src="https://kit.fontawesome.com/92d70a2fd8.js" crossorigin="anonymous"> </script>
+    <title> Sanao Project | ICS-301P </title>
+</head>
+
+<body>
+<div class="site">
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="first_page.html" class="logo-link"> 
+                <img src="logo.png" alt="Logo" class="logo">
+            </a>
+        </div> 
+
+        <div class="nav-links">
+            <a href="first_page.html" target="_self"> ABOUT </a>
+            <a href="second_page.html" target="_self"> PEOPLE </a>
+            <a href="third_page.html" target="_self"> ACTIVITIES </a>
+        </div>  
+
+        <div class="nav-right">
+            <form method="GET" target="_self" class="search-form">
+                <div class="search-container">
+                    <span class="search-icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" name="search" id="searchInput" placeholder="Search..." class="search-input" required>
+                </div>
+            </form>
+        </div>
+    </nav>
+
+        <div id="main-content"> 
+            <h1 class="title"> Meet the People Behind This Program </h1>
+            
+            <div class="card-wrapper">         
+                <div class="card">
+                    <div class="card-header"> </div>
+
+                    <div class="image-container">
+                        <img src="group.jpg" alt="Gallery Image"/>
+                    </div>
+
+                    <div class="card-description">
+                        <p> The <strong> Youth Servant Leaders (YSLs) </strong> of Our Lady of Fatima Parish (OLFP) are a vibrant community of young individuals committed to service, faith, and leadership. Guided by the parish priest and the YSLEP Coordinator, the YSLs embody dedication and teamwork in carrying out programs that nurture both spiritual and academic growth. </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"> </div>
+                    
+                    <div class="image-container">
+                        <img src="sponsors.jpg" alt="Gallery Image"/>
+                    </div>
+
+                    <div class="card-description">
+                        <p> The YSLs extend their deepest gratitude to their <strong> sponsors</strong>, whose generosity makes education and continuous learning possible. These sponsors are not only benefactors but also sources of motivation and inspiration, encouraging the youth to strive harder, aim higher, and remain steadfast in their studies. Their support sustains the mission of empowering servant leaders for the future. </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"> </div>
+
+                    <div class="image-container">
+                        <img src="coords.jpg" alt="Gallery Image"/>
+                    </div>
+
+                    <div class="card-description">
+                        <p> At the heart of the program is Tita Susan Tulabot, the <strong> YSLEP Coordinator in OLFP</strong>. Known for her dedication, hard work, kindness, and strong leadership, she provides direction and encouragement to the youth, ensuring that every initiative is carried out with compassion and excellence. Her guidance has been instrumental in shaping the YSLs into responsible and service-oriented leaders. </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"> </div>
+
+                    <div class="image-container">
+                        <img src="father.jpg" alt="Gallery Image"/>
+                    </div>
+
+                    <div class="card-description">
+                        <p> The program is further strengthened under the leadership of <strong> Rev. Fr. Anton Cecilio T. Pascual, Executive Director of Caritas Manila</strong>, the social service and development arm of the Archdiocese of Manila. Fr. Pascual is a respected church leader who has long championed education, social justice, and charitable works. He previously served as President of Radio Veritas 846 for two decades and continues to advocate for the poor and marginalized through Caritas Manila’s programs. His vision and commitment inspire the YSLs to live out their mission of service with faith and integrity. </p>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <footer>
+            Caritas Manila • Youth Servant Leadership and Education Program (YSLEP) • OLFP
+        </footer>
+</div>
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+            const search = params.get("search");
+            if (!search) return;
+
+            const keyword = search.toLowerCase();
+            const main = document.getElementById("main-content");
+
+            const pages = ["first_page.html", "second_page.html", "third_page.html"];
+
+            let loaded = 0;
+            let results = "";
+            let found = false;
+
+            pages.forEach(page => {
+                const iframe = document.createElement("iframe");
+
+                // hidden but still readable
+                iframe.style.visibility = "hidden";
+                iframe.style.width = "0";
+                iframe.style.height = "0";
+                iframe.style.border = "none";
+
+                iframe.onload = () => {
+                    setTimeout(() => {
+                        let html = "";
+                        try {
+                            html = iframe.contentDocument.body.innerHTML;
+                        } catch (e) {
+                            console.log("ERROR:", page, e);
+                        }
+
+                        const lowerHTML = html.toLowerCase();
+
+                        if (lowerHTML.includes(keyword)) {
+                            found = true;
+
+                            // clickable result
+                            results += `
+                                <a href="${page}?highlight=${search}" class="result-card">
+                                    <span class="checkmark">✔</span>
+                                    <span class="keyword">"${search}" found!</span>
+                                    <span class="page-label">Go to ${page}</span>
+                                </a>
+                            `;
+                        }
+
+                        loaded++;
+                        if (loaded === pages.length) {
+                            main.innerHTML = `
+                                <div class="results-container">
+                                    <h1>Search Results for: "<span class="highlighted-word">${search}</span>"</h1>
+                                    <hr>
+                                    ${found ? results : `
+                                        <div class="no-result">
+                                            <h2>No results found</h2>
+                                            <p>The keyword does not appear in any page.</p>
+                                        </div>
+                                    `}
+                                </div>
+                            `;
+                        }
+                    }, 130);
+                };
+
+                iframe.src = page;
+                document.body.appendChild(iframe);
+            });
+        });
+        </script>
+
+        <script>
+            const navbar = document.querySelector(".navbar");
+            navbar.classList.add("big");
+
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 20) {
+                    navbar.classList.add("shrink");
+                    navbar.classList.remove("big");
+                } else {
+                    navbar.classList.add("big");
+                    navbar.classList.remove("shrink");
+                }
+            });
+        </script>
+</body>
+</html>

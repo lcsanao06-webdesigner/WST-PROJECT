@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" href="logo.png"/>
+    <link rel="stylesheet" href="style.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://kit.fontawesome.com/92d70a2fd8.js" crossorigin="anonymous"> </script>
+    <title> Project | ICS-301P </title>
+</head>
+
+<body class="activities-page">
+    <div class="site"> 
+        <nav class="navbar">
+            <div class="nav-left">
+                <a href="first_page.html" class="logo-link"> 
+                    <img src="logo.png" alt="Logo" class="logo">
+                </a>
+            </div> 
+
+            <div class="nav-links">
+                <a href="first_page.html" target="_self"> ABOUT </a>
+                <a href="second_page.html" target="_self"> PEOPLE </a>
+                <a href="third_page.html" target="_self"> ACTIVITIES </a>
+            </div>  
+
+            <div class="nav-right">
+                <form method="GET" target="_self" class="search-form">
+                    <div class="search-container">
+                        <span class="search-icon">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input type="text" name="search" id="searchInput" placeholder="Search..." class="search-input" required>
+                    </div>
+                </form>
+            </div>
+        </nav>
+
+        <main id="main-content">
+            <div class="tbg-wrap"> 
+                    <h1 class="gallery-title" data-aos="fade-up">Our Group Activities</h1>
+            </div>
+                
+            <div class="group-gallery">      
+                    <!-- GROUP 1 --> 
+                    <div class="group-card" data-aos="fade-up" data-aos-duration="900">
+                        <img src="december.jpg" alt="Group 1">
+                        <p> Social Apostolate: December Delights </p>    
+                        <i style="display: block; text-align: center; margin-top: 0;"> December Delights is a tradition where YSLs share joy, hope, and love through gifts, food, and performances. </i>
+                    </div>
+
+                    <!-- GROUP 2 -->
+                    <div class="group-card" style="size: 100"; data-aos="fade-up" data-aos-duration="900">
+                        <img src="formation.jpg" alt="Group 2" style="object-fit: cover; object-position: 50% 30%; width: 100%; height: 450px; border-radius: 12px; transform: translateY(5px);">
+                        <p> Monthly Formation </p>   
+                        <i style="display: block; text-align: center; margin-top: 0;"> Held every first or second Sunday, YSLs grow in faith and personal development. </i>
+                    </div>
+
+                    <!-- GROUP 3 -->
+                    <div class="group-card" data-aos="fade-up" data-aos-duration="900">
+                        <img src="meeting.jpg" alt="Group 3">
+                        <p> Monthly Meeting </p>
+                        <i style="display: block; text-align: center; margin-top: 0;"> Meetings are held for announcements, documents, and activity planning. </i>
+                    </div>
+
+                    <!-- GROUP 4 -->
+                    <div class="group-card" data-aos="fade-up" data-aos-duration="900">
+                        <img src="garage.jpg" alt="Group 4">
+                        <p> Social Apostolate: Garage Sale </p>
+                        <i style="display: block; text-align: center; margin-top: 0;"> A two-Sunday sale of pre-loved items. Proceeds went to the Correctional Institution for Women. </i>
+                    </div>
+                    
+                    <!-- GROUP 5 -->
+                    <div class="group-card" data-aos="fade-up" data-aos-duration="900">
+                        <img src="mass.jpg" alt="Group 4">
+                        <p> Holy Spirit Mass </p>
+                        <i style="display: block; text-align: center; margin-top: 0;"> Every school year, YSLs join the Holy Spirit Mass to welcome new scholars. </i>
+                    </div>
+
+                     <!-- GROUP 6 -->
+                    <div class="group-card" data-aos="fade-up" data-aos-duration="900">
+                        <img src="movie.jpg" alt="Group 4">
+                        <p> Fundraising Event of Caritas Manila Alumni Scholar Association (CAMASA) for the benefit of YSLEP </p>
+                        <i style="display: block; text-align: center; margin-top: 0;"> A yearly CAMASA fundraising event featuring the movie Wicked: For Good,dedicated to supporting YSLEP. </i>
+                    </div>
+
+                </div>
+        </div>
+
+        <script>
+            AOS.init();
+        </script>
+
+        <footer>
+            Caritas Manila • Youth Servant Leadership and Education Program (YSLEP) • OLFP
+        </footer>
+</div>
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+            const search = params.get("search");
+            if (!search) return;
+
+            const keyword = search.toLowerCase();
+            const main = document.getElementById("main-content");
+
+            const pages = ["first_page.html", "second_page.html", "third_page.html"];
+
+            let loaded = 0;
+            let results = "";
+            let found = false;
+
+            pages.forEach(page => {
+                const iframe = document.createElement("iframe");
+
+                // hidden but still readable
+                iframe.style.visibility = "hidden";
+                iframe.style.width = "0";
+                iframe.style.height = "0";
+                iframe.style.border = "none";
+
+                iframe.onload = () => {
+                    setTimeout(() => {
+                        let html = "";
+                        try {
+                            html = iframe.contentDocument.body.innerHTML;
+                        } catch (e) {
+                            console.log("ERROR:", page, e);
+                        }
+
+                        const lowerHTML = html.toLowerCase();
+
+                        if (lowerHTML.includes(keyword)) {
+                            found = true;
+
+                            // clickable result
+                            results += `
+                                <a href="${page}?highlight=${search}" class="result-card">
+                                    <span class="checkmark">✔</span>
+                                    <span class="keyword">"${search}" found!</span>
+                                    <span class="page-label">Go to ${page}</span>
+                                </a>
+                            `;
+                        }
+
+                        loaded++;
+                        if (loaded === pages.length) {
+                            main.innerHTML = `
+                                <div class="results-container">
+                                    <h1>Search Results for: "<span class="highlighted-word">${search}</span>"</h1>
+                                    <hr>
+                                    ${found ? results : `
+                                        <div class="no-result">
+                                            <h2>No results found</h2>
+                                            <p>The keyword does not appear in any page.</p>
+                                        </div>
+                                    `}
+                                </div>
+                            `;
+                        }
+                    }, 130);
+                };
+
+                iframe.src = page;
+                document.body.appendChild(iframe);
+            });
+        });
+        </script>
+
+        <script>
+            const navbar = document.querySelector(".navbar");
+            navbar.classList.add("big");
+
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 20) {
+                    navbar.classList.add("shrink");
+                    navbar.classList.remove("big");
+                } else {
+                    navbar.classList.add("big");
+                    navbar.classList.remove("shrink");
+                }
+            });
+        </script>
+</body>
+</html>
